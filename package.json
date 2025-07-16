@@ -1,6 +1,6 @@
 {
-  "name": "@bandwidth/10dlc-sdk",
-  "version": "1.0.5",
+  "name": "@visitor-reach/bw-10dlc-sdk",
+  "version": "1.0.0",
   "description": "Node.js SDK for Bandwidth 10DLC API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
