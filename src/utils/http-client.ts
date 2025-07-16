@@ -105,13 +105,6 @@ export class HttpClient {
           }
         }
         
-        // Debug logging
-        console.log('API Request:', {
-          method: config.method?.toUpperCase(),
-          url: `${config.baseURL}${config.url}`,
-          headers: config.headers,
-          data: config.data
-        });
         
         return config;
       },
@@ -127,7 +120,7 @@ export class HttpClient {
           try {
             response.data = await parseXmlResponse(response.data);
           } catch (error) {
-            console.warn('Failed to parse XML response:', error);
+            // XML parsing failed, continue with original response
           }
         }
         return response;
@@ -159,15 +152,6 @@ export class HttpClient {
           enhancedError.response = error.response;
           enhancedError.config = error.config;
           
-          // Log additional debug info for 406 errors
-          if (error.response.status === 406) {
-            console.error('406 Error Details:', {
-              url: error.config.url,
-              method: error.config.method,
-              headers: error.config.headers,
-              data: error.config.data
-            });
-          }
           
           throw enhancedError;
         }

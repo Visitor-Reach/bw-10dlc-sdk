@@ -12,8 +12,6 @@ export class CampaignAssignmentsResource {
     }
     const response = await this.httpClient.get<XmlAssignmentRequestsResponse>(url);
     
-    // Debug logging
-    console.log('Campaign Assignments API Response:', JSON.stringify(response, null, 2));
     
     // Handle XML response structure (likely similar to other endpoints)
     if (response?.assignmentrequestsresponse?.assignmentrequests?.assignmentrequest) {

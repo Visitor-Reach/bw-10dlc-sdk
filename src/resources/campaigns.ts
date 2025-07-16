@@ -12,8 +12,6 @@ export class CampaignsResource {
     }
     const response = await this.httpClient.get<XmlCampaignsResponse>(url);
     
-    // Debug logging
-    console.log('Campaigns API Response:', JSON.stringify(response, null, 2));
     
     // Handle XML response structure: <Campaigns><Campaign>...
     if (response?.campaigns?.campaign) {

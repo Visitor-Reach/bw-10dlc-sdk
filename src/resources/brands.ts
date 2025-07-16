@@ -8,8 +8,6 @@ export class BrandsResource {
   async list(): Promise<Brand[]> {
     const response = await this.httpClient.get<XmlBrandsResponse>('/campaignManagement/10dlc/brands/details?type=none');
     
-    // Debug logging
-    console.log('Brands API Response:', JSON.stringify(response, null, 2));
     
     // Handle XML response structure: <Brands><Brand>...
     if (response?.brands?.brand) {
