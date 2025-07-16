@@ -1,17 +1,17 @@
-# Bandwidth 10DLC SDK for Node.js
+# Visitor Reach 10DLC SDK for Node.js
 
 A comprehensive Node.js SDK for interacting with Bandwidth's 10DLC API.
 
 ## Installation
 
 ```bash
-npm install @bandwidth/10dlc-sdk
+npm install @visitor-reach/bw-10dlc-sdk
 ```
 
 ## Quick Start
 
 ```typescript
-import { Bandwidth10DLCClient } from '@bandwidth/10dlc-sdk';
+import { Bandwidth10DLCClient } from '@visitor-reach/bw-10dlc-sdk';
 
 const client = new Bandwidth10DLCClient({
   credentials: {
