@@ -167,7 +167,7 @@ const client = new Bandwidth10DLCClient({
     username: 'your-api-username',
     password: 'your-api-password'
   },
-  baseURL: 'https://custom-api-url.com', // Optional: Override the default API URL (default: https://dashboard.bandwidth.com/api/v2)
+  baseURL: 'https://custom-api-url.com', // Optional: Override the default API URL (default: https://dashboard.bandwidth.com/api/v1)
   authURL: 'https://custom-auth-url.com', // Optional: Override the auth URL (default: https://id.bandwidth.com/api/v1/oauth2/token)
   timeout: 60000 // Optional: Request timeout in milliseconds (default: 30000)
 });
