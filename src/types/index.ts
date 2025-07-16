@@ -57,12 +57,39 @@ export interface Brand {
   businessContactEmail?: string;
 }
 
+export interface MnoMetadata {
+  mnoId: string;
+  mno: string;
+  mnoSupport: boolean;
+  mnoReview: boolean;
+  qualify: boolean;
+  minMessageSamples: number;
+  requireSubscriberOptIn: boolean;
+  requireSubscriberOptOut: boolean;
+  requireSubscriberHelp: boolean;
+  noEmbeddedLink: boolean;
+  noEmbeddedPhone: boolean;
+  brandDailyCap?: number;
+  brandTier?: string;
+  messageClass?: string;
+  tpm?: number;
+  tpmScope?: string;
+}
+
+export interface MnoStatus {
+  mnoName: string;
+  mnoId: string;
+  status: string;
+}
+
 export interface Campaign {
   campaignId?: string;
   accountId?: string;
   brandId: string;
   usecase: string;
+  subUsecases?: string;
   description: string;
+  resellerId?: string;
   embeddedLink: boolean;
   embeddedPhone: boolean;
   affiliateMarketing?: boolean;
@@ -77,13 +104,25 @@ export interface Campaign {
   sample3?: string;
   sample4?: string;
   sample5?: string;
-  status?: 'ACTIVE' | 'EXPIRED';
-  subUsecases?: string[];
   messageFlow?: string;
+  helpKeywords?: string;
   helpMessage?: string;
+  optinKeywords?: string;
+  optinMessage?: string;
+  optoutKeywords?: string;
+  optoutMessage?: string;
+  privacyPolicyLink?: string;
+  termsAndConditionsLink?: string;
   referenceId?: string;
   autoRenewal?: boolean;
+  status?: 'ACTIVE' | 'EXPIRED';
   createDate?: string;
+  billedDate?: string;
+  mnoMetadataList?: MnoMetadata[];
+  mnoStatusList?: MnoStatus[];
+  sharingStatus?: boolean;
+  secondaryDcaSharingStatus?: string;
+  hasSubId?: boolean;
 }
 
 export interface CampaignAssignment {
@@ -136,6 +175,9 @@ export interface XmlCampaignsResponse {
 
 export interface XmlCampaignResponse {
   campaign?: unknown;
+  campaignresponse?: {
+    campaign?: unknown;
+  };
 }
 
 export interface XmlAssignmentRequestsResponse {

@@ -30,8 +30,10 @@ export class CampaignsResource {
     const response = await this.httpClient.get<XmlCampaignResponse>(`/campaignManagement/10dlc/campaigns/${campaignId}`);
     
     // Handle XML response structure and transform to proper object
-    if (response?.campaign) {
-      return transformCampaignFromXml(response.campaign);
+    // API returns either direct campaign or wrapped in campaignresponse
+    const campaignData = response?.campaignresponse?.campaign || response?.campaign;
+    if (campaignData) {
+      return transformCampaignFromXml(campaignData);
     }
     
     throw new Error('Campaign not found');
@@ -41,8 +43,9 @@ export class CampaignsResource {
     const response = await this.httpClient.post<XmlCampaignResponse>('/campaignManagement/10dlc/campaigns', campaign);
     
     // Handle XML response structure and transform to proper object
-    if (response?.campaign) {
-      return transformCampaignFromXml(response.campaign);
+    const campaignData = response?.campaignresponse?.campaign || response?.campaign;
+    if (campaignData) {
+      return transformCampaignFromXml(campaignData);
     }
     
     throw new Error('Failed to create campaign');
@@ -52,8 +55,9 @@ export class CampaignsResource {
     const response = await this.httpClient.put<XmlCampaignResponse>(`/campaignManagement/10dlc/campaigns/${campaignId}`, campaign);
     
     // Handle XML response structure and transform to proper object
-    if (response?.campaign) {
-      return transformCampaignFromXml(response.campaign);
+    const campaignData = response?.campaignresponse?.campaign || response?.campaign;
+    if (campaignData) {
+      return transformCampaignFromXml(campaignData);
     }
     
     throw new Error('Failed to update campaign');
