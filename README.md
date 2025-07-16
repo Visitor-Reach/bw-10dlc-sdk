@@ -79,7 +79,17 @@ const vettedBrand = await client.brands.vet('brand-id');
 const campaigns = await client.campaigns.list();
 
 // List campaigns for a specific brand
-const brandCampaigns = await client.campaigns.list('brand-id');
+const brandCampaigns = await client.campaigns.list({ brandId: 'brand-id' });
+
+// List campaigns with pagination (zero-based page index)
+const paginatedCampaigns = await client.campaigns.list({ page: 0, size: 10 });
+
+// List campaigns for a brand with pagination
+const paginatedBrandCampaigns = await client.campaigns.list({ 
+  brandId: 'brand-id', 
+  page: 1, 
+  size: 20 
+});
 
 // Create a new campaign
 const newCampaign = await client.campaigns.create({

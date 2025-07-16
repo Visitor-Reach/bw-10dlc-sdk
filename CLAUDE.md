@@ -15,7 +15,7 @@ npm run build
 # Run linter
 npm run lint
 
-# Run tests (note: no tests currently exist)
+# Run tests
 npm test
 
 # Install dependencies
@@ -44,7 +44,7 @@ npm install
 ### Resource Modules
 
 - **Brands** (`src/resources/brands.ts`): Manage brand entities that represent businesses
-- **Campaigns** (`src/resources/campaigns.ts`): Manage SMS campaigns linked to brands
+- **Campaigns** (`src/resources/campaigns.ts`): Manage SMS campaigns linked to brands, supports pagination
 - **Campaign Assignments** (`src/resources/campaign-assignments.ts`): Assign phone numbers to campaigns
 
 ### Type System
@@ -66,5 +66,25 @@ The SDK enhances error messages from API failures to include:
 - The project uses TypeScript with strict type checking
 - Compiled output goes to `/dist` directory
 - ESLint is configured for TypeScript
-- Jest is configured but no tests exist yet
+- Jest is configured with comprehensive test coverage for brands and campaigns resources
 - All API communication uses XML format via the `xml2js` library
+
+## Pagination Support
+
+The campaigns resource supports pagination via the `list()` method:
+- Use `page` (zero-based) and `size` parameters together
+- Pagination is only applied when both parameters are provided
+- Can be combined with `brandId` filtering
+- Without pagination parameters, all results are returned
+
+Example:
+```typescript
+// Get all campaigns (no pagination)
+await client.campaigns.list();
+
+// Get first page with 10 campaigns
+await client.campaigns.list({ page: 0, size: 10 });
+
+// Get campaigns for brand with pagination
+await client.campaigns.list({ brandId: 'brand-id', page: 1, size: 20 });
+```
