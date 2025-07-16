@@ -1,7 +1,6 @@
 import { CampaignsResource } from '../resources/campaigns';
 import { HttpClient } from '../utils/http-client';
 import { Campaign, BandwidthCredentials } from '../types';
-import { transformCampaignFromXml } from '../utils/xml-parser';
 
 jest.mock('../utils/http-client');
 jest.mock('../utils/xml-parser', () => ({
@@ -118,7 +117,7 @@ describe('CampaignsResource', () => {
 
       mockHttpClient.get.mockResolvedValue(mockXmlResponse);
 
-      const result = await campaignsResource.list('brand-1');
+      const result = await campaignsResource.list({ brandId: 'brand-1' });
 
       expect(mockHttpClient.get).toHaveBeenCalledWith('/campaignManagement/10dlc/campaigns?brandId=brand-1');
       expect(result).toHaveLength(1);
@@ -163,6 +162,110 @@ describe('CampaignsResource', () => {
       const result = await campaignsResource.list();
 
       expect(result).toEqual([]);
+    });
+
+    it('should support pagination when page and size are provided', async () => {
+      const mockXmlResponse = {
+        campaigns: {
+          campaign: {
+            campaignId: ['campaign-1'],
+            brandId: ['brand-1'],
+            usecase: ['CUSTOMER_CARE'],
+            description: ['Customer support messages'],
+            embeddedLink: ['false'],
+            embeddedPhone: ['false'],
+            subscriberOptin: ['true'],
+            subscriberOptout: ['true'],
+            subscriberHelp: ['true'],
+            sample1: ['Hello, this is a test message']
+          }
+        }
+      };
+
+      mockHttpClient.get.mockResolvedValue(mockXmlResponse);
+
+      const result = await campaignsResource.list({ page: 0, size: 10 });
+
+      expect(mockHttpClient.get).toHaveBeenCalledWith('/campaignManagement/10dlc/campaigns?page=0&size=10');
+      expect(result).toHaveLength(1);
+    });
+
+    it('should support pagination with brandId filter', async () => {
+      const mockXmlResponse = {
+        campaigns: {
+          campaign: {
+            campaignId: ['campaign-1'],
+            brandId: ['brand-1'],
+            usecase: ['CUSTOMER_CARE'],
+            description: ['Customer support messages'],
+            embeddedLink: ['false'],
+            embeddedPhone: ['false'],
+            subscriberOptin: ['true'],
+            subscriberOptout: ['true'],
+            subscriberHelp: ['true'],
+            sample1: ['Hello, this is a test message']
+          }
+        }
+      };
+
+      mockHttpClient.get.mockResolvedValue(mockXmlResponse);
+
+      const result = await campaignsResource.list({ brandId: 'brand-1', page: 1, size: 5 });
+
+      expect(mockHttpClient.get).toHaveBeenCalledWith('/campaignManagement/10dlc/campaigns?brandId=brand-1&page=1&size=5');
+      expect(result).toHaveLength(1);
+    });
+
+    it('should not add pagination params when only page is provided', async () => {
+      const mockXmlResponse = {
+        campaigns: {
+          campaign: {
+            campaignId: ['campaign-1'],
+            brandId: ['brand-1'],
+            usecase: ['CUSTOMER_CARE'],
+            description: ['Customer support messages'],
+            embeddedLink: ['false'],
+            embeddedPhone: ['false'],
+            subscriberOptin: ['true'],
+            subscriberOptout: ['true'],
+            subscriberHelp: ['true'],
+            sample1: ['Hello, this is a test message']
+          }
+        }
+      };
+
+      mockHttpClient.get.mockResolvedValue(mockXmlResponse);
+
+      const result = await campaignsResource.list({ page: 0 });
+
+      expect(mockHttpClient.get).toHaveBeenCalledWith('/campaignManagement/10dlc/campaigns');
+      expect(result).toHaveLength(1);
+    });
+
+    it('should not add pagination params when only size is provided', async () => {
+      const mockXmlResponse = {
+        campaigns: {
+          campaign: {
+            campaignId: ['campaign-1'],
+            brandId: ['brand-1'],
+            usecase: ['CUSTOMER_CARE'],
+            description: ['Customer support messages'],
+            embeddedLink: ['false'],
+            embeddedPhone: ['false'],
+            subscriberOptin: ['true'],
+            subscriberOptout: ['true'],
+            subscriberHelp: ['true'],
+            sample1: ['Hello, this is a test message']
+          }
+        }
+      };
+
+      mockHttpClient.get.mockResolvedValue(mockXmlResponse);
+
+      const result = await campaignsResource.list({ size: 10 });
+
+      expect(mockHttpClient.get).toHaveBeenCalledWith('/campaignManagement/10dlc/campaigns');
+      expect(result).toHaveLength(1);
     });
   });
 

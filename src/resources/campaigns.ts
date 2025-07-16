@@ -5,13 +5,25 @@ import { transformCampaignFromXml } from '../utils/xml-parser';
 export class CampaignsResource {
   constructor(private httpClient: HttpClient) {}
 
-  async list(brandId?: string): Promise<Campaign[]> {
+  async list(options?: { brandId?: string; page?: number; size?: number }): Promise<Campaign[]> {
     let url = '/campaignManagement/10dlc/campaigns';
-    if (brandId) {
-      url += `?brandId=${brandId}`;
-    }
-    const response = await this.httpClient.get<XmlCampaignsResponse>(url);
+    const params: string[] = [];
     
+    if (options?.brandId) {
+      params.push(`brandId=${options.brandId}`);
+    }
+    
+    // Add pagination parameters if both page and size are provided
+    if (options?.page !== undefined && options?.size !== undefined) {
+      params.push(`page=${options.page}`);
+      params.push(`size=${options.size}`);
+    }
+    
+    if (params.length > 0) {
+      url += `?${params.join('&')}`;
+    }
+    
+    const response = await this.httpClient.get<XmlCampaignsResponse>(url);
     
     // Handle XML response structure: <Campaigns><Campaign>...
     if (response?.campaigns?.campaign) {

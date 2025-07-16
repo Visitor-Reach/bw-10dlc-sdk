@@ -1,7 +1,6 @@
 import { BrandsResource } from '../resources/brands';
 import { HttpClient } from '../utils/http-client';
 import { Brand, BandwidthCredentials } from '../types';
-import { transformBrandFromXml } from '../utils/xml-parser';
 
 jest.mock('../utils/http-client');
 jest.mock('../utils/xml-parser', () => ({
