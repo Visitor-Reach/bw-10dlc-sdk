@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { BandwidthCredentials, TokenResponse, TokenData, EnhancedError } from '../types';
-import { parseXmlResponse, serializeBrandToXml, serializeCampaignToXml, serializeCampaignAssignmentToXml } from './xml-parser';
+import { parseXmlResponse, serializeBrandToXml, serializeCampaignToXml } from './xml-parser';
 
 export class HttpClient {
   private client: AxiosInstance;
@@ -98,10 +98,8 @@ export class HttpClient {
         if ((config.method === 'post' || config.method === 'put') && config.data && typeof config.data === 'object') {
           if (config.url?.includes('/brands')) {
             config.data = serializeBrandToXml(config.data);
-          } else if (config.url?.includes('/campaigns') && !config.url?.includes('assignmentRequests')) {
+          } else if (config.url?.includes('/campaigns')) {
             config.data = serializeCampaignToXml(config.data);
-          } else if (config.url?.includes('/assignmentRequests')) {
-            config.data = serializeCampaignAssignmentToXml(config.data);
           }
         }
         

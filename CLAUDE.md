@@ -29,7 +29,7 @@ npm install
 1. **Main Client** (`src/index.ts`)
    - Entry point that initializes the SDK with OAuth2 credentials
    - Manages authentication (token acquisition, caching, refresh)
-   - Provides access to three resource modules: brands, campaigns, and campaignAssignments
+   - Provides access to two resource modules: brands and campaigns
 
 2. **Authentication Flow**
    - Uses OAuth2 client credentials flow
@@ -45,12 +45,11 @@ npm install
 
 - **Brands** (`src/resources/brands.ts`): Manage brand entities that represent businesses
 - **Campaigns** (`src/resources/campaigns.ts`): Manage SMS campaigns linked to brands, supports pagination
-- **Campaign Assignments** (`src/resources/campaign-assignments.ts`): Assign phone numbers to campaigns
 
 ### Type System
 
 All API operations have corresponding TypeScript types in `src/types/`:
-- `Brand`, `Campaign`, `CampaignAssignment` - Main entity types
+- `Brand`, `Campaign` - Main entity types
 - `Create*`, `Update*` - Request payload types
 - `*Response` - API response wrapper types
 

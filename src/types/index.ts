@@ -125,10 +125,6 @@ export interface Campaign {
   hasSubId?: boolean;
 }
 
-export interface CampaignAssignment {
-  campaignId: string;
-  tn: string;
-}
 
 export interface ListBrandsResponse {
   brands: Brand[];
@@ -138,9 +134,6 @@ export interface ListCampaignsResponse {
   campaigns: Campaign[];
 }
 
-export interface ListCampaignAssignmentsResponse {
-  campaignAssignments: CampaignAssignment[];
-}
 
 export interface ErrorResponse {
   error: {
@@ -180,10 +173,3 @@ export interface XmlCampaignResponse {
   };
 }
 
-export interface XmlAssignmentRequestsResponse {
-  assignmentrequestsresponse?: {
-    assignmentrequests?: {
-      assignmentrequest: unknown | unknown[];
-    };
-  };
-}

@@ -1,5 +1,5 @@
 import { parseString } from 'xml2js';
-import { Brand, Campaign, CampaignAssignment, MnoMetadata, MnoStatus } from '../types';
+import { Brand, Campaign, MnoMetadata, MnoStatus } from '../types';
 
 export async function parseXmlResponse(xmlString: string): Promise<unknown> {
   return new Promise((resolve, reject) => {
@@ -158,15 +158,6 @@ export function transformCampaignFromXml(xmlCampaign: unknown): Campaign {
   };
 }
 
-export function transformCampaignAssignmentFromXml(xmlAssignment: unknown): CampaignAssignment {
-  if (!xmlAssignment) throw new Error('Invalid assignment data');
-  
-  const assignment = xmlAssignment as Record<string, unknown>;
-  return {
-    campaignId: assignment.campaignid as string,
-    tn: assignment.tn as string
-  };
-}
 
 export function serializeBrandToXml(brand: Partial<Brand>): string {
   const xmlParts: string[] = ['<Brand>'];
@@ -233,18 +224,3 @@ export function serializeCampaignToXml(campaign: Partial<Campaign>): string {
   return xmlParts.join('\n');
 }
 
-export function serializeCampaignAssignmentToXml(assignment: { campaignId?: string; tns?: string[] }): string {
-  const xmlParts: string[] = ['<CampaignAssignment>'];
-  
-  if (assignment.campaignId) xmlParts.push(`  <CampaignId>${assignment.campaignId}</CampaignId>`);
-  if (assignment.tns && Array.isArray(assignment.tns)) {
-    xmlParts.push('  <Tns>');
-    assignment.tns.forEach((tn: string) => {
-      xmlParts.push(`    <Tn>${tn}</Tn>`);
-    });
-    xmlParts.push('  </Tns>');
-  }
-  
-  xmlParts.push('</CampaignAssignment>');
-  return xmlParts.join('\n');
-}
