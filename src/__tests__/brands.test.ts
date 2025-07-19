@@ -381,7 +381,7 @@ describe('BrandsResource', () => {
 
       expect(mockHttpClient.post).toHaveBeenCalledWith(
         '/campaignManagement/10dlc/brands/brand-1/vetting',
-        '<Brand><EvpId>AEGIS</EvpId><VettingClass>STANDARD</VettingClass></Brand>'
+        '<BrandVetting><EvpId>AEGIS</EvpId><VettingClass>STANDARD</VettingClass></BrandVetting>'
       );
       expect(result).toEqual(mockBrand);
     });
@@ -414,7 +414,7 @@ describe('BrandsResource', () => {
 
       expect(mockHttpClient.post).toHaveBeenCalledWith(
         '/campaignManagement/10dlc/brands/brand-1/vetting',
-        '<Brand><EvpId>WMC</EvpId><VettingClass>PREMIUM</VettingClass></Brand>'
+        '<BrandVetting><EvpId>WMC</EvpId><VettingClass>PREMIUM</VettingClass></BrandVetting>'
       );
       expect(result).toEqual(mockBrand);
     });
@@ -447,7 +447,7 @@ describe('BrandsResource', () => {
 
       expect(mockHttpClient.post).toHaveBeenCalledWith(
         '/campaignManagement/10dlc/brands/brand-1/vetting',
-        '<Brand><EvpId>TEST_PROVIDER</EvpId><VettingClass>CUSTOM_CLASS</VettingClass></Brand>'
+        '<BrandVetting><EvpId>TEST_PROVIDER</EvpId><VettingClass>CUSTOM_CLASS</VettingClass></BrandVetting>'
       );
       expect(result).toEqual(mockBrand);
     });
