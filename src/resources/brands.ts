@@ -61,8 +61,8 @@ export class BrandsResource {
     return await this.httpClient.post<Brand>(`/campaignManagement/10dlc/brands/${brandId}/tcr`);
   }
 
-  async vet(brandId: string, vettingProvider?: string): Promise<Brand> {
-    const data = vettingProvider ? { vettingProvider } : {};
-    return await this.httpClient.post<Brand>(`/campaignManagement/10dlc/brands/${brandId}/vet`, data);
+  async vet(brandId: string, vettingProvider: string = 'AEGIS', vettingClass: string = 'STANDARD'): Promise<Brand> {
+    const xmlData = `<Brand><EvpId>${vettingProvider}</EvpId><VettingClass>${vettingClass}</VettingClass></Brand>`;
+    return await this.httpClient.post<Brand>(`/campaignManagement/10dlc/brands/${brandId}/vetting`, xmlData);
   }
 }

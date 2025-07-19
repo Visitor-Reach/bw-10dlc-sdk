@@ -266,4 +266,190 @@ describe('BrandsResource', () => {
       await expect(brandsResource.create(newBrand)).rejects.toThrow('Failed to create brand');
     });
   });
+
+  describe('update', () => {
+    it('should update and return the updated brand', async () => {
+      const updateData: Partial<Brand> = {
+        displayName: 'Updated Brand Name',
+        phone: '+15559876543'
+      };
+
+      const mockXmlResponse = {
+        brand: {
+          brandId: ['brand-1'],
+          displayName: ['Updated Brand Name'],
+          companyName: ['Test Company'],
+          phone: ['+15559876543'],
+          ein: ['12-3456789'],
+          street: ['123 Test St'],
+          city: ['Test City'],
+          state: ['CA'],
+          postalCode: ['12345'],
+          country: ['US'],
+          email: ['test@test.com'],
+          entityType: ['PRIVATE_PROFIT'],
+          brandRelationship: ['BASIC_ACCOUNT'],
+          vertical: ['TECHNOLOGY']
+        }
+      };
+
+      mockHttpClient.put.mockResolvedValue(mockXmlResponse);
+
+      const result = await brandsResource.update('brand-1', updateData);
+
+      expect(mockHttpClient.put).toHaveBeenCalledWith('/campaignManagement/10dlc/brands/brand-1', updateData);
+      expect(result).toMatchObject({
+        brandId: 'brand-1',
+        displayName: 'Updated Brand Name',
+        phone: '+15559876543'
+      });
+    });
+
+    it('should throw error when update fails', async () => {
+      mockHttpClient.put.mockResolvedValue({});
+
+      await expect(brandsResource.update('brand-1', {})).rejects.toThrow('Failed to update brand');
+    });
+  });
+
+  describe('delete', () => {
+    it('should delete a brand successfully', async () => {
+      mockHttpClient.delete.mockResolvedValue(undefined);
+
+      await brandsResource.delete('brand-1');
+
+      expect(mockHttpClient.delete).toHaveBeenCalledWith('/campaignManagement/10dlc/brands/brand-1');
+    });
+  });
+
+  describe('importTcr', () => {
+    it('should import brand from TCR', async () => {
+      const mockBrand: Brand = {
+        brandId: 'brand-1',
+        displayName: 'Imported Brand',
+        companyName: 'Imported Company',
+        entityType: 'PRIVATE_PROFIT',
+        ein: '12-3456789',
+        phone: '+15551234567',
+        street: '123 Import St',
+        city: 'Import City',
+        state: 'CA',
+        postalCode: '12345',
+        country: 'US',
+        email: 'import@test.com',
+        brandRelationship: 'BASIC_ACCOUNT',
+        vertical: 'TECHNOLOGY',
+        accountId: 'acc-123',
+        identityStatus: 'VERIFIED'
+      };
+
+      mockHttpClient.post.mockResolvedValue(mockBrand);
+
+      const result = await brandsResource.importTcr('brand-1');
+
+      expect(mockHttpClient.post).toHaveBeenCalledWith('/campaignManagement/10dlc/brands/brand-1/tcr');
+      expect(result).toEqual(mockBrand);
+    });
+  });
+
+  describe('vet', () => {
+    it('should vet a brand with default parameters', async () => {
+      const mockBrand: Brand = {
+        brandId: 'brand-1',
+        displayName: 'Test Brand',
+        companyName: 'Test Company',
+        entityType: 'PRIVATE_PROFIT',
+        ein: '12-3456789',
+        phone: '+15551234567',
+        street: '123 Test St',
+        city: 'Test City',
+        state: 'CA',
+        postalCode: '12345',
+        country: 'US',
+        email: 'test@test.com',
+        brandRelationship: 'BASIC_ACCOUNT',
+        vertical: 'TECHNOLOGY',
+        accountId: 'acc-123',
+        identityStatus: 'VERIFIED',
+        vettingProvider: 'AEGIS',
+        vettingScore: 95
+      };
+
+      mockHttpClient.post.mockResolvedValue(mockBrand);
+
+      const result = await brandsResource.vet('brand-1');
+
+      expect(mockHttpClient.post).toHaveBeenCalledWith(
+        '/campaignManagement/10dlc/brands/brand-1/vetting',
+        '<Brand><EvpId>AEGIS</EvpId><VettingClass>STANDARD</VettingClass></Brand>'
+      );
+      expect(result).toEqual(mockBrand);
+    });
+
+    it('should vet a brand with custom parameters', async () => {
+      const mockBrand: Brand = {
+        brandId: 'brand-1',
+        displayName: 'Test Brand',
+        companyName: 'Test Company',
+        entityType: 'PRIVATE_PROFIT',
+        ein: '12-3456789',
+        phone: '+15551234567',
+        street: '123 Test St',
+        city: 'Test City',
+        state: 'CA',
+        postalCode: '12345',
+        country: 'US',
+        email: 'test@test.com',
+        brandRelationship: 'BASIC_ACCOUNT',
+        vertical: 'TECHNOLOGY',
+        accountId: 'acc-123',
+        identityStatus: 'VERIFIED',
+        vettingProvider: 'WMC',
+        vettingScore: 87
+      };
+
+      mockHttpClient.post.mockResolvedValue(mockBrand);
+
+      const result = await brandsResource.vet('brand-1', 'WMC', 'PREMIUM');
+
+      expect(mockHttpClient.post).toHaveBeenCalledWith(
+        '/campaignManagement/10dlc/brands/brand-1/vetting',
+        '<Brand><EvpId>WMC</EvpId><VettingClass>PREMIUM</VettingClass></Brand>'
+      );
+      expect(result).toEqual(mockBrand);
+    });
+
+    it('should handle special characters in vetting parameters', async () => {
+      const mockBrand: Brand = {
+        brandId: 'brand-1',
+        displayName: 'Test Brand',
+        companyName: 'Test Company',
+        entityType: 'PRIVATE_PROFIT',
+        ein: '12-3456789',
+        phone: '+15551234567',
+        street: '123 Test St',
+        city: 'Test City',
+        state: 'CA',
+        postalCode: '12345',
+        country: 'US',
+        email: 'test@test.com',
+        brandRelationship: 'BASIC_ACCOUNT',
+        vertical: 'TECHNOLOGY',
+        accountId: 'acc-123',
+        identityStatus: 'VERIFIED',
+        vettingProvider: 'TEST_PROVIDER',
+        vettingScore: 90
+      };
+
+      mockHttpClient.post.mockResolvedValue(mockBrand);
+
+      const result = await brandsResource.vet('brand-1', 'TEST_PROVIDER', 'CUSTOM_CLASS');
+
+      expect(mockHttpClient.post).toHaveBeenCalledWith(
+        '/campaignManagement/10dlc/brands/brand-1/vetting',
+        '<Brand><EvpId>TEST_PROVIDER</EvpId><VettingClass>CUSTOM_CLASS</VettingClass></Brand>'
+      );
+      expect(result).toEqual(mockBrand);
+    });
+  });
 });
